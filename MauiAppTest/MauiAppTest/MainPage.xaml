@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MauiAppTest.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:blazorweb="clr-namespace:Microsoft.AspNetCore.Components.Web;assembly=Microsoft.AspNetCore.Components.Web"
+    xmlns:local="clr-namespace:MauiAppTest"
+    BackgroundColor="{DynamicResource PageBackgroundColor}">
+
+    <BlazorWebView x:Name="blazorWebView" HostPage="wwwroot/index.html">
+        <BlazorWebView.RootComponents>
+            <RootComponent ComponentType="{x:Type local:Components.Routes}" Selector="#app" />
+            <RootComponent ComponentType="{x:Type blazorweb:HeadOutlet}" Selector="#testlink-head::after" />
+        </BlazorWebView.RootComponents>
+    </BlazorWebView>
+
+</ContentPage>

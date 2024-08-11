@@ -1,0 +1,65 @@
+﻿@inherits LayoutComponentBase
+
+<HeadContent>
+    @if (IsLight)
+    {
+        <link rel="stylesheet" href="_content/Radzen.Blazor/css/material.css">
+    }
+    else
+    {
+        <link rel="stylesheet" href="_content/Radzen.Blazor/css/material-dark.css">
+    }
+</HeadContent>
+
+<RadzenLayout>
+    <RadzenHeader>
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0">
+            <RadzenSidebarToggle Click="@(() => SidebarExpanded = !SidebarExpanded)" />
+            <RadzenLabel Text="TEST" />
+            <RadzenToggleButton Style="margin-left: auto; margin-right: 1rem;"
+                                Icon=@(IsLight ? "dark_mode" : "light_mode")
+                                Value=@IsLight
+                                Variant=Variant.Text ButtonStyle=ButtonStyle.Base ToggleButtonStyle=ButtonStyle.Base ToggleShade=Shade.Default
+                                Change=@OnChange />
+        </RadzenStack>
+    </RadzenHeader>
+    <RadzenSidebar Responsive="false" Style="width: max-content">
+        <RadzenPanelMenu Match="NavLinkMatch.Prefix" Click=@MenuClick DisplayStyle="@(SidebarExpanded ? MenuItemDisplayStyle.IconAndText : MenuItemDisplayStyle.Icon)" ShowArrow="false">
+            <RadzenPanelMenuItem Text="Home" Icon="home" Path="/" />
+            <RadzenPanelMenuItem Text="Counter" Icon="class" Path="/counter" />
+            <RadzenPanelMenuItem Text="Weather" Icon="class" Path="/weather" />
+        </RadzenPanelMenu>
+    </RadzenSidebar>
+    <RadzenBody>
+        @Body
+    </RadzenBody>
+    <RadzenFooter>
+        © @DateTime.Now.Year
+    </RadzenFooter>
+</RadzenLayout>
+
+@code
+{
+    bool IsLight { get; set; }
+
+    bool SidebarExpanded { get; set; } = false;
+
+    Task MenuClick(MenuItemEventArgs args)
+    {
+        return InvokeAsync(async () =>
+        {
+            await Task.Delay(200);
+        });
+    }
+
+    void OnChange(bool value)
+    {
+        Preferences.Set("IsLight", value);
+        IsLight = value;
+    }
+
+    protected override void OnInitialized()
+    {
+        IsLight = Preferences.Get("IsLight", true);
+    }
+}
